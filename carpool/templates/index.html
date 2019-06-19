@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html class="not-ie no-js" lang="en">
+{% load static %}
+
+<head>
+
+  <!-- Basic Page Needs -->
+  <meta charset="utf-8">
+  <title>Автостопом до Кижинги</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Mobile Specific Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Styles -->
+
+  <!-- Bootstrap -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Forms -->
+  <link href="{% static 'css/jquery.idealforms.css' %}" rel="stylesheet">
+  <!-- Select  -->
+  <link href="{% static 'css/jquery.idealselect.css' %}" rel="stylesheet">
+  <!-- Slicknav  -->
+  <link href="{% static 'css/slicknav.css' %}" rel="stylesheet">
+  <!-- Main style -->
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+
+  <!-- Modernizr -->
+  <script src="{% static 'js/modernizr.js' %}"></script>
+
+  <!-- Fonts -->
+  <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+  <link rel="shortcut icon" type="image/ico" href="{% static 'img/favicon.ico' %}"/>
+
+</head>
+
+<body>
+
+  <header class="header">
+
+    <div class="top-menu">
+
+      <section class="container">
+        <div class="row">
+
+          <div class="col-md-8 col-sm-8 col-xs-12">
+            <div class="logo">
+              Автостопом до Кижинги
+            </div>
+          </div><!-- end .col-sm-8 -->
+
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="user-log">
+
+              <a href="{% url 'addPool' %}">
+                                    Добавить машину
+                                </a> /
+              <a href="{% url 'logout' %}">
+                                    Выйти
+                                </a>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <div class="main-baner">
+
+        <div class="background parallax clearfix" style="background-image:url('{% static 'img/tumblr_n7yhhvUQtx1st5lhmo1_1280.jpg' %}');" data-img-width="1600" data-img-height="1064">
+
+            <div class="main-parallax-content">
+
+                <div class="second-parallax-content">
+
+                    <section class="container">
+
+                        <div class="row">
+
+                            <div class="main-header-container clearfix">
+
+                                <div class="col-md-4 col-sm-12 col-xs-12">
+
+                                    <div class="logo">
+                                        <h1>&nbsp;</h1>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+  </header>
+
+  <section class="main-content">
+
+    <div class="container">
+      <div class="row">
+
+        <div class="page-content">
+
+          <div class="last-rides">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+              <div class="page-sub-title textcenter">
+                <h2>Мои попутки</h2>
+                <div class="line"></div>
+              </div>
+
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              {% for ride in myrides %}
+              <article class="ride-box clearfix">
+
+                <div class="ride-content">
+                  <h3><a href="#">Откуда {{ ride.source }}, Куда {{ ride.dest }}</a></h3>водитель <a href="#">{{ ride.user.first_name }} {{ ride.user.last_name }}</a>
+                </div>
+
+                <ul class="ride-meta">
+                    <li class="ride-date tooltip-link">
+                        <i class="fa fa-rub"></i>
+                        {% if ride.amount == None %}
+                            0
+                        {% else %}
+                            {{ ride.amount }}
+                        {% endif %}
+                    </li>
+                    <li class="ride-date">
+                      <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
+                                                        <i class="fa fa-calendar"></i>
+                                                        {{ ride.dateTime }}
+                                                    </a>
+                    </li>
+
+                    <li class="ride-people">
+                      <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
+                                                        <i class="fa fa-user"></i>
+                                                        {{ ride.slots.count }}
+                                                    </a>
+                    </li>
+
+                  <li>
+                    {% for form in delform %}
+                    {% if ride.pk == form.pk.value %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form }}
+                            <button type="submit" name="del" class="cancel"><i class="fa fa-times"></i> Отмена</button>
+                        </form>
+                    {% endif %}
+                    {% endfor %}
+                  </li>
+
+                </ul>
+
+              </article>
+              {% endfor %}
+              <div class="clearfix"></div>
+            </div>
+          </div>
+
+          <div class="clearfix"></div>
+          <div class="container">
+            <div class="row last-rides">
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="page-sub-title textcenter">
+                  <h2>Все попутки</h2>
+                  <div class="line"></div>
+                </div>
+
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="search-content">
+
+                  <form method="post">
+                      {% csrf_token %}
+                      {{ filter }}
+                      <div class="field buttons">
+                        <button type="submit" class="btn btn-lg green-color" name="filter">Найти</button>
+                      </div>
+                  </form>
+
+
+                </div>
+
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="page-content">
+
+                  <div class="rides-list">
+                    {% for ride in allrides %}
+                    <article class="ride-box clearfix">
+
+                      <div class="ride-content">
+                        <h3><a href="#">Откуда: {{ ride.source }}, Куда: {{ ride.dest }}</a></h3>водитель: <a href="#">{{ ride.user.first_name }} {{ ride.user.last_name }}</a>
+                      </div>
+
+                      <ul class="ride-meta">
+                          <li class="ride-date tooltip-link">
+                              <i class="fa fa-rub"></i>
+                              {% if ride.amount == None %}
+                                  0
+                              {% else %}
+                                  {{ ride.amount }}
+                              {% endif %}
+                          </li>
+                        <li class="ride-date">
+                          <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
+                                                            <i class="fa fa-calendar"></i>
+                                                            {{ ride.dateTime }}
+                                                        </a>
+                        </li>
+
+                        <li class="ride-people">
+                          <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
+                                                            <i class="fa fa-user"></i>
+                                                            {{ ride.tot }}
+                                                        </a>
+                        </li>
+
+                        <li>
+                            {% for form in addform %}
+                            {% if ride.pk == form.pk.value %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    {{ form }}
+                                    <button type="submit" name="add" class="cancel"><i class="fa fa-file"></i> Забронировать</button>
+                                </form>
+                            {% endif %}
+                            {% endfor %}
+                        </li>
+
+                      </ul>
+
+                    </article>
+                    {% endfor %}
+
+                    <div class="clearfix"></div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <footer id="footer">
+
+    <div class="footer-copyright">
+
+      <div class="container">
+        <div class="row">
+
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            Автостопом до Кижинги | Создано с помощью Django/Python
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </footer>
+
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <form action="" novalidate autocomplete="off" class="idealforms login">
+
+            <div class="log-header">
+              <span class="log-in">Вход</span>
+            </div>
+
+            <div class="field">
+              <input name="username" type="text" placeholder="Username">
+              <span class="error"></span>
+            </div>
+
+            <div class="field">
+              <input type="password" name="password" placeholder="Password">
+              <span class="error"></span>
+            </div>
+
+            <div class="field buttons">
+              <button type="submit" class="submit btn green-color">Log in</button>
+            </div>
+
+            <a href="#" class="log-twitter twitter"><i class="fa fa-twitter"></i>Twitter</a>
+            <a href="#" class="log-facebook facebook"><i class="fa fa-facebook"></i>Facebook</a>
+
+            <div class="clearfix"></div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <form action="" novalidate autocomplete="off" class="idealforms reg">
+
+            <div class="log-header">
+              <span class="log-in">Sign up</span>
+            </div>
+
+            <div class="field">
+              <input name="username" type="text" placeholder="Username">
+              <span class="error"></span>
+            </div>
+
+            <div class="field">
+              <input name="email" type="email"  placeholder="E-Mail">
+              <span class="error"></span>
+            </div>
+
+            <div class="field">
+              <input type="password" name="password" placeholder="Password">
+              <span class="error"></span>
+            </div>
+
+            <div class="field">
+              <input name="confirmpass" type="password"  placeholder="Password">
+              <span class="error"></span>
+            </div>
+
+            <div class="field buttons">
+              <button type="submit" class="submit btn green-color">Sign up</button>
+            </div>
+
+            <div class="clearfix"></div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Javascript -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  <!-- Main jQuery -->
+  <script type="text/javascript" src="{% static 'js/jquery.main.js' %}"></script>
+  <!-- Form -->
+  <script type="text/javascript" src="{% static 'js/jquery.idealforms.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.idealselect.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery-ui-1.10.4.custom.min.js' %}"></script>
+  <!-- Menu -->
+  <script type="text/javascript" src="{% static 'js/hoverIntent.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/superfish.js' %}"></script>
+  <!-- Counter-Up  -->
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.counterup.min.js' %}"></script>
+  <!-- Rating  -->
+  <script type="text/javascript" src="{% static 'js/bootstrap-rating-input.min.js' %}"></script>
+  <!-- Slicknav  -->
+  <script type="text/javascript" src="{% static 'js/jquery.slicknav.min.js' %}"></script>
+
+</body>
+
+</html>
