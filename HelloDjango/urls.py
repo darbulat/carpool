@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('carpool.urls')),
     path('', include('django.contrib.auth.urls')),
     path('', include('social_django.urls')),
+    path('accounts/', include('allauth.urls')),
 ]

@@ -32,9 +32,10 @@
 				</div>
 			</form>
 			{{ error }}
-			<a href="/login/vk-oauth2">
-				<h5>Вход с помощью ВК</h5>
-			</a>
+
+			{% load socialaccount %}
+			<a href='{% provider_login_url "vk" %}'> Войти через VK </a>
+
 			<h5>Вы еще не зарегистрированы?
 				<a href="{% url 'new' %}">Регистрация</a>
 			</h5>
