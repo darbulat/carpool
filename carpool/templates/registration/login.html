@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+	<title>
+		Вход | Автостопом до Кижинги
+	</title>
+	<link href="{% static 'css/style.css' %}" rel='stylesheet' type='text/css' />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Login , registration, forgot password " . />
+	<link href='http://fonts.googleapis.com/css?family=Cabin:400,500,600,700,400italic,500italic,600italic,700italic' rel='stylesheet' type='text/css'>
+{% endblock %}
+
+{% block content %}
+	<div class="login-01">
+		<div class="one-login hvr-float-shadow">
+			<div class="one-login-head">
+				<h1>Автостопом до Кижинги</h1>
+				<img src="{% static 'images/top-lock.png' %}" alt=""/>
+				<h1>Авторизация</h1>
+			</div>
+
+            <form action="." method="POST" class="login">
+                {% if form.errors %}
+                <p>Ошибка: пароль или логин неправильные. Попробуйте снова</p>
+                {% else %}
+                <p>введите логин/пароль:</p>
+                {% endif %}
+				{% csrf_token %}
+				<li>
+
+					{{ form.username }}<a href="" class=" icon user"></a>
+				</li>
+				<li>
+					{{ form.password }}<a href="" class=" icon lock"></a>
+				</li>
+				<div class="submit">
+                    <input type="hidden" name="next" value="{{ next }}" />
+					<input type="submit"  value="ВХОД" >
+				</div>
+			</form>
+			{{ error }}
+			<h5>Вы еще не зарегистрированы?
+				<a href="{% url 'new' %}">Регистрация</a>
+			</h5>
+		</div>
+	</div>
+{% endblock %}
+
+
+
