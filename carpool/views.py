@@ -38,26 +38,6 @@ def new(request):
     return render(request, 'signup.html', {'form': form, 'error': error, 'done': done, })
 
 
-def log(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect('/')
-    else:
-        error = ""
-        if request.method == 'POST':
-            form = LoginForm(request.POST)
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('dashboard')
-            else:
-                error += "Invalid details."
-        else:
-            form = LoginForm()
-        return render(request, 'login.html', {'form': form, 'error': error})
-
-
 def dashboard(request):
     if request.user.is_authenticated:
         allrides = Pool.objects.filter(dateTime__date__gt=datetime.date.today(), tot__gt=0)
@@ -107,7 +87,7 @@ def dashboard(request):
                       {'allrides': allrides, 'myrides': myrides, 'filter': filter, 'delform': delform,
                        'addform': addform})
     else:
-        return redirect('log')
+        return redirect('login')
 
 
 def addPool(request):
@@ -120,7 +100,7 @@ def addPool(request):
             form = PoolForm(initial={'paid': False, 'user': request.user})
         return render(request, 'add.html', {'form': form})
     else:
-        return redirect('log')
+        return redirect('login')
 
 
 def activate(request, uidb64, token):
