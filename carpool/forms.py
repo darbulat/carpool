@@ -5,14 +5,16 @@ from .models import User, Pool
 
 
 class SignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
-    last_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
-    email = forms.EmailField(max_length=254)
+    first_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'placeholder': 'Имя'}))
+    last_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'placeholder': 'Фамилия'}))
+    email = forms.EmailField(max_length=254, widget=forms.TextInput(attrs={'placeholder': 'e-mail'}))
+    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}))
+    password2 = forms.CharField(label='Повторите пароль',
+                                widget=forms.PasswordInput(attrs={'placeholder': 'Повторить пароль'}))
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name',
-                  'password1', 'password2', )
+        fields = ('email', 'first_name', 'last_name', 'password1', 'password2')
 
 
 CHOICE = (

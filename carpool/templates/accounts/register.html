@@ -6,7 +6,7 @@
 	</title>
 	<link href="{% static 'css/style.css' %}" rel='stylesheet' type='text/css' />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="keywords" content="Login , registration, forgot password " . />
+	<meta name="keywords" content="Login , registration, forgot password " />
 	<link href='http://fonts.googleapis.com/css?family=Cabin:400,500,600,700,400italic,500italic,600italic,700italic' rel='stylesheet' type='text/css'>
 {% endblock %}
 
@@ -18,25 +18,12 @@
 				<img src="{% static 'images/top-note.png' %}" alt=""/>
 				<h2>Регистрация</h2>
 			</div>
-			<form method="post" autocomplete="off">
+			<form method="post" action=".">
+				{{ form.as_p }}
 				{% csrf_token %}
-				<li>
-					{{ form.email }}<a href="" class=" icon2 mail"></a>
-				</li>
-				<li>
-					{{ form.first_name }}<a href="" class=" icon2 user2"></a>
-				</li>
-				<li>
-					{{ form.last_name }}<a href="" class=" icon2 name"></a>
-				</li>
-				<li>
-					{{ form.password1 }}<a href="" class=" icon2 lock2"></a>
-				</li>
-				<li>
-					{{ form.password2 }}<a href="" class=" icon2 lock2"></a>
-				</li>
+
 				<div class="submit two">
-					<input type="submit"  value="REGISTER" >
+					<input type="submit"  value="Зарегистрироваться" >
 				</div>
 			</form>
 

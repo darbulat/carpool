@@ -29,6 +29,7 @@ def new(request):
             error += "Invalid information/ Email already in use."
         else:
             user = form.save(commit=False)
+            user.set_password(form.cleaned_data["password2"])
             user.is_active = True
             user.save()
             done = True
