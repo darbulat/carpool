@@ -4,6 +4,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from .models import User, Pool
 
+from accounts.models import Profile
+
 
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):
@@ -28,3 +30,8 @@ class UserAdmin(DjangoUserAdmin):
 
 
 admin.site.register(Pool)
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ["user", "birthdate", "avatar"]
