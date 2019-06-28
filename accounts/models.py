@@ -8,4 +8,5 @@ class Profile(models.Model):
     avatar = models.ImageField(upload_to="user_avatars/%Y/%m/%d", blank=True)
 
     def __str__(self):
-        return "Профиль пользователя %s" % self.user.username1
+        return "Профиль пользователя %s" % self.user.username
+
