@@ -1,21 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.forms import AuthenticationForm as LoginForm
-from django.contrib.auth.decorators import login_required
-from django.template.loader import render_to_string
-from django.core.mail import EmailMessage, send_mail
-from django.contrib.sites.shortcuts import get_current_site
-from django.conf import settings
 from .tokens import account_activation_token
 import datetime
 
 from .forms import SignUpForm, PoolForm, filterForm, DeleteForm, AddForm
 from .models import Pool, User
-
-
-def IITmail(request):
-    return True
 
 
 def new(request):
@@ -41,8 +31,8 @@ def new(request):
 
 def dashboard(request):
     if request.user.is_authenticated:
-        allrides = Pool.objects.filter(dateTime__date__gt=datetime.date.today(), tot__gt=0)
-        myrides = Pool.objects.filter(slots=request.user, dateTime__date__gt=datetime.date.today())
+        allrides = Pool.objects.filter(dateTime__gte=datetime.date.today(), tot__gt=0)
+        myrides = Pool.objects.filter(slots=request.user, dateTime__gte=datetime.date.today())
         delform = []
         addform = []
         for ride in myrides:
@@ -51,14 +41,11 @@ def dashboard(request):
             filter = filterForm(request.POST)
             indate = request.POST['date_year'] + '-' + request.POST['date_month'] + '-' + request.POST['date_day']
             CHOICES = {'1': "Кижинга", '2': "Улан-Удэ", '3': "Хоринск", }
-            if 'free' in request.POST:
-                allrides = Pool.objects.filter(source=CHOICES[request.POST['source']],
-                                               dest=CHOICES[request.POST['dest']], tot__gte=request.POST['tot'],
-                                               paid=False, dateTime__date=indate, )
-            else:
-                allrides = Pool.objects.filter(source=CHOICES[request.POST['source']],
-                                               dest=CHOICES[request.POST['dest']], tot__gte=request.POST['tot'],
-                                               paid=True, dateTime__date=indate, )
+            allrides = Pool.objects.filter(source=CHOICES[request.POST['source']],
+                                           dest=CHOICES[request.POST['dest']],
+                                           tot__gte=request.POST['tot'],
+                                           dateTime=indate,
+                                           )
         else:
             filter = filterForm()
         for ride in allrides:
@@ -69,15 +56,15 @@ def dashboard(request):
             my_pool.slots.remove(request.user)
             my_pool.tot = my_pool.tot + 1
             my_pool.save()
-            allrides = Pool.objects.filter(dateTime__date__gt=datetime.date.today(), tot__gt=0)
+            allrides = Pool.objects.filter(dateTime__gte=datetime.date.today(), tot__gt=0)
         if request.method == 'POST' and 'add' in request.POST:
             form = AddForm(request.POST)
             my_pool = Pool.objects.get(pk=form['pk'].value())
             my_pool.slots.add(request.user)
             my_pool.tot = my_pool.tot - 1
             my_pool.save()
-            allrides = Pool.objects.filter(dateTime__date__gt=datetime.date.today(), tot__gt=0)
-        myrides = Pool.objects.filter(slots=request.user, dateTime__date__gt=datetime.date.today())
+            allrides = Pool.objects.filter(dateTime__gte=datetime.date.today(), tot__gt=0)
+        myrides = Pool.objects.filter(slots=request.user, dateTime__gte=datetime.date.today())
         delform = []
         addform = []
         for ride in myrides:
@@ -94,11 +81,11 @@ def dashboard(request):
 def addPool(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            form = PoolForm(request.POST, initial={'paid': False, 'user': request.user})
+            form = PoolForm(request.POST, initial={'user': request.user})
             if form.is_valid():
                 form.save()
         else:
-            form = PoolForm(initial={'paid': False, 'user': request.user})
+            form = PoolForm(initial={'user': request.user})
         return render(request, 'add.html', {'form': form})
     else:
         return redirect('login')

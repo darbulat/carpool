@@ -23,19 +23,35 @@ CHOICE = (
     ("Хоринск", _("Хоринск")),
 )
 
+CHOICE_PASS = (
+    ("Пассажир", _("Пассажир")),
+    ("Водитель", _("Водитель")),
+)
+
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
+class TimeInput(forms.TimeInput):
+    input_type = 'time'
+
 
 class PoolForm(forms.ModelForm):
     user = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
+    passenger = forms.ChoiceField(choices=CHOICE_PASS, label="Пассажир", widget=forms.Select())
     tot = forms.IntegerField(widget=forms.NumberInput(), label="Мест")
-    dateTime = forms.DateTimeField(widget=forms.widgets.DateTimeInput(), label="Дата отправления YYYY-MM-DD HH:MM")
+    dateTime = forms.DateField(widget=DateInput(format="%d/%m/%Y"), label="Дата отправления")
+    time = forms.TimeField(widget=TimeInput(), label='Время отправления')
     source = forms.ChoiceField(choices=CHOICE, label="Откуда", initial='', widget=forms.Select())
     dest = forms.ChoiceField(choices=CHOICE, label="куда", initial='', widget=forms.Select())
-    paid = forms.BooleanField(required=False, label="оплата")
     amount = forms.IntegerField(widget=forms.NumberInput(), required=False, label="стоимость")
+    phone_number = forms.CharField(widget=forms.TextInput(), required=False, label="номер телефона")
+    note = forms.CharField(widget=forms.TextInput(), required=False, label='Дополнительная информация')
 
     class Meta:
         model = Pool
-        fields = ('user', 'tot', 'dateTime', 'source', 'dest', 'paid', 'amount',)
+        fields = ('user', 'passenger', 'tot', 'dateTime', 'time', 'source', 'dest', 'amount', 'phone_number', 'note')
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('label_suffix', '')
@@ -52,7 +68,6 @@ CHOICES = (
 class filterForm(forms.Form):
     source = forms.ChoiceField(choices=CHOICES, label="Откуда", initial='', widget=forms.Select())
     dest = forms.ChoiceField(choices=CHOICES, label="Куда", initial='', widget=forms.Select())
-    free = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'checkbox'}))
     tot = forms.IntegerField(widget=forms.NumberInput(), label="кол-во")
     date = forms.DateField(widget=forms.SelectDateWidget(), label="Дата")
 

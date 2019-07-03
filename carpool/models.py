@@ -52,13 +52,20 @@ class User(AbstractUser):
 class Pool(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
-    dateTime = models.DateTimeField(default=now)
+    passenger = models.CharField(max_length=100)
+    dateTime = models.DateField(default=now)
+    time = models.TimeField(default=now)
     tot = models.PositiveIntegerField(default=1)
     slots = models.ManyToManyField(User, related_name='slots')
     source = models.CharField(max_length=100)
     dest = models.CharField(max_length=100)
-    paid = models.BooleanField(default=False)
-    amount = models.PositiveIntegerField(blank=True, null=True)
+    amount = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    phone_number = models.CharField(max_length=17, blank=True)
+    note = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.first_name + ' ' + self.source + '-' + self.dest + ' ' + self.passenger + '\n Телефон: ' + \
+               self.phone_number + ' Дата: ' + str(self.dateTime) + ' Время: ' + str(self.time)
 
     def __self__(self):
         return self.user.first_name + ' ' + self.source + '-' + self.dest

@@ -16,6 +16,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- Styles -->
+        <link rel="stylesheet" href="{% static 'css/jquery.datetimepicker.min.css' %}">
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <script src="{% static 'js/jquery.datetimepicker.full.js' %}"></script>
 
         <!-- Bootstrap -->
         <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
@@ -50,7 +53,9 @@
 
               <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="logo">
-                  Автостопом до Кижинги
+                    <a href="{% url 'dashboard' %}">
+                        Автостопом до Кижинги
+                    </a>
                 </div>
               </div><!-- end .col-sm-8 -->
 
@@ -147,10 +152,15 @@
                                     <br>
                                   {% endif %}
                                 {% endfor %}
+
                                 <div class="field buttons">
                                     <button type="submit" class="btn btn-lg green-color">Добавить</button>
                                 </div>
-
+                                    <script>
+                                        $("#datetime").datetimepicker({
+                                            step: 5
+                                        })
+                                    </script>
 
                             </form>
 

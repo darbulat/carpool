@@ -39,7 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'carpool',
+    'datetimewidget',
 ]
+
+USE_L10N = True
+USE_TZ = True
+USE_I18N = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware'
 ]
 
 ROOT_URLCONF = 'HelloDjango.urls'
@@ -102,11 +108,6 @@ LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'Asia/Irkutsk'
 
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
 
 LOGOUT_REDIRECT_URL = '/login/'
 

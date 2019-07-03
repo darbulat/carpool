@@ -48,8 +48,9 @@
 
           <div class="col-md-8 col-sm-8 col-xs-12">
             <div class="logo">
-              Автостопом до Кижинги. Привет, {{ user.first_name }}
-
+                <a href="{% url 'dashboard' %}">
+                    Автостопом до Кижинги. Привет, {{ user.first_name }}
+                </a>
             </div>
           </div><!-- end .col-sm-8 -->
 
@@ -135,7 +136,9 @@
               <article class="ride-box clearfix">
 
                 <div class="ride-content">
-                  <h3><a href="#">Откуда {{ ride.source }}, Куда {{ ride.dest }}</a></h3>водитель <a href="#">{{ ride.user.first_name }} {{ ride.user.last_name }}</a>
+                  <h3><a href="#" class="tooltip-link" data-toggle="tooltip" data-original-title=" {{ ride.note }} ">Откуда {{ ride.source }}, Куда {{ ride.dest }}</a></h3>
+                    {{ ride.passenger }} <a href="#">{{ ride.user.first_name }} {{ ride.user.last_name }}</a>
+                    телефон {{ ride.phone_number }}
                 </div>
 
                 <ul class="ride-meta">
@@ -149,9 +152,10 @@
                     </li>
                     <li class="ride-date">
                       <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                                        <i class="fa fa-calendar"></i>
-                                                        {{ ride.dateTime }}
-                                                    </a>
+                          <i class="fa fa-calendar"></i>
+                          {{ ride.dateTime }}
+                          {{ ride.time}}
+                      </a>
                     </li>
 
                     <li class="ride-people">
@@ -220,7 +224,9 @@
                     <article class="ride-box clearfix">
 
                       <div class="ride-content">
-                        <h3><a href="#">Откуда: {{ ride.source }}, Куда: {{ ride.dest }}</a></h3>водитель: <a href="#">{{ ride.user.first_name }} {{ ride.user.last_name }}</a>
+                        <h3><a href="#" class="tooltip-link" data-toggle="tooltip" data-original-title=" {{ ride.note }} ">Откуда: {{ ride.source }}, Куда: {{ ride.dest }}</a></h3>
+                          {{ ride.passenger }} <a href="#">{{ ride.user.first_name }} {{ ride.user.last_name }}</a>
+                          телефон {{ ride.phone_number}}
                       </div>
 
                       <ul class="ride-meta">
@@ -234,9 +240,10 @@
                           </li>
                         <li class="ride-date">
                           <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                                            <i class="fa fa-calendar"></i>
-                                                            {{ ride.dateTime }}
-                                                        </a>
+                              <i class="fa fa-calendar"></i>
+                              {{ ride.dateTime }}
+                              {{ ride.time}}
+                          </a>
                         </li>
 
                         <li class="ride-people">
@@ -246,17 +253,17 @@
                                                         </a>
                         </li>
 
-                        <li>
-                            {% for form in addform %}
-                            {% if ride.pk == form.pk.value %}
-                                <form method="POST">
-                                    {% csrf_token %}
-                                    {{ form }}
-                                    <button type="submit" name="add" class="cancel"><i class="fa fa-file"></i> Забронировать</button>
-                                </form>
-                            {% endif %}
-                            {% endfor %}
-                        </li>
+<!--                        <li>-->
+<!--                            {% for form in addform %}-->
+<!--                            {% if ride.pk == form.pk.value %}-->
+<!--                                <form method="POST">-->
+<!--                                    {% csrf_token %}-->
+<!--                                    {{ form }}-->
+<!--                                    <button type="submit" name="add" class="cancel"><i class="fa fa-file"></i> Забронировать</button>-->
+<!--                                </form>-->
+<!--                            {% endif %}-->
+<!--                            {% endfor %}-->
+<!--                        </li>-->
 
                       </ul>
 
