@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'carpool',
-    'datetimewidget',
+    'vkparser',
 ]
 
 USE_L10N = True
@@ -83,7 +83,9 @@ WSGI_APPLICATION = 'HelloDjango.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
+        'NAME': 'darbulat_dj1',
+        'USER': 'darbulat_dj1',
+        'PASSWORD': 'bynthytn',
         'HOST': 'localhost',
         'PORT': '',
     }

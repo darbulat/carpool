@@ -120,70 +120,70 @@
 
         <div class="page-content">
 
-          <div class="last-rides">
+<!--          <div class="last-rides">-->
 
-            <div class="col-md-12 col-sm-12 col-xs-12">
+<!--            <div class="col-md-12 col-sm-12 col-xs-12">-->
 
-              <div class="page-sub-title textcenter">
-                <h2>Мои попутки</h2>
-                <div class="line"></div>
-              </div>
+<!--              <div class="page-sub-title textcenter">-->
+<!--                <h2>Мои попутки</h2>-->
+<!--                <div class="line"></div>-->
+<!--              </div>-->
 
-            </div>
+<!--            </div>-->
 
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              {% for ride in myrides %}
-              <article class="ride-box clearfix">
+<!--            <div class="col-md-12 col-sm-12 col-xs-12">-->
+<!--              {% for ride in myrides %}-->
+<!--              <article class="ride-box clearfix">-->
 
-                <div class="ride-content">
-                  <h3><a href="#" class="tooltip-link" data-toggle="tooltip" data-original-title=" {{ ride.note }} ">Откуда {{ ride.source }}, Куда {{ ride.dest }}</a></h3>
-                    {{ ride.passenger }} <a href="#">{{ ride.user.first_name }} {{ ride.user.last_name }}</a>
-                    телефон {{ ride.phone_number }}
-                </div>
+<!--                <div class="ride-content">-->
+<!--                  <h3><a href="#" class="tooltip-link" data-toggle="tooltip" data-original-title=" {{ ride.note }} ">Откуда {{ ride.source }}, Куда {{ ride.dest }}</a></h3>-->
+<!--                    {{ ride.passenger }} <a href="#">{{ ride.user.first_name }} {{ ride.user.last_name }}</a>-->
+<!--                    телефон {{ ride.phone_number }}-->
+<!--                </div>-->
 
-                <ul class="ride-meta">
-                    <li class="ride-date tooltip-link">
-                        <i class="fa fa-rub"></i>
-                        {% if ride.amount == None %}
-                            0
-                        {% else %}
-                            {{ ride.amount }}
-                        {% endif %}
-                    </li>
-                    <li class="ride-date">
-                      <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                          <i class="fa fa-calendar"></i>
-                          {{ ride.dateTime }}
-                          {{ ride.time}}
-                      </a>
-                    </li>
+<!--                <ul class="ride-meta">-->
+<!--                    <li class="ride-date tooltip-link">-->
+<!--                        <i class="fa fa-rub"></i>-->
+<!--                        {% if ride.amount == None %}-->
+<!--                            0-->
+<!--                        {% else %}-->
+<!--                            {{ ride.amount }}-->
+<!--                        {% endif %}-->
+<!--                    </li>-->
+<!--                    <li class="ride-date">-->
+<!--                      <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">-->
+<!--                          <i class="fa fa-calendar"></i>-->
+<!--                          {{ ride.dateTime }}-->
+<!--                          {{ ride.time}}-->
+<!--                      </a>-->
+<!--                    </li>-->
 
-                    <li class="ride-people">
-                      <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                                        <i class="fa fa-user"></i>
-                                                        {{ ride.slots.count }}
-                                                    </a>
-                    </li>
+<!--                    <li class="ride-people">-->
+<!--                      <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">-->
+<!--                                                        <i class="fa fa-user"></i>-->
+<!--                                                        {{ ride.slots.count }}-->
+<!--                                                    </a>-->
+<!--                    </li>-->
 
-                  <li>
-                    {% for form in delform %}
-                    {% if ride.pk == form.pk.value %}
-                        <form method="POST">
-                            {% csrf_token %}
-                            {{ form }}
-                            <button type="submit" name="del" class="cancel"><i class="fa fa-times"></i> Отмена</button>
-                        </form>
-                    {% endif %}
-                    {% endfor %}
-                  </li>
+<!--                  <li>-->
+<!--                    {% for form in delform %}-->
+<!--                    {% if ride.pk == form.pk.value %}-->
+<!--                        <form method="POST">-->
+<!--                            {% csrf_token %}-->
+<!--                            {{ form }}-->
+<!--                            <button type="submit" name="del" class="cancel"><i class="fa fa-times"></i> Отмена</button>-->
+<!--                        </form>-->
+<!--                    {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                  </li>-->
 
-                </ul>
+<!--                </ul>-->
 
-              </article>
-              {% endfor %}
-              <div class="clearfix"></div>
-            </div>
-          </div>
+<!--              </article>-->
+<!--              {% endfor %}-->
+<!--              <div class="clearfix"></div>-->
+<!--            </div>-->
+<!--          </div>-->
 
           <div class="clearfix"></div>
           <div class="container">
