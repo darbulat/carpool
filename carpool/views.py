@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login
 from django.http import HttpResponseRedirect, HttpResponse
 from .tokens import account_activation_token
 import datetime
@@ -32,11 +32,7 @@ def new(request):
 def dashboard(request):
     if request.user.is_authenticated:
         allrides = Pool.objects.filter(dateTime__gte=datetime.date.today(), tot__gt=0)
-        myrides = Pool.objects.filter(slots=request.user, dateTime__gte=datetime.date.today())
-        delform = []
         addform = []
-        for ride in myrides:
-            delform += [DeleteForm(initial={'pk': ride.pk})]
         if request.method == 'POST' and 'filter' in request.POST:
             filter = filterForm(request.POST)
             indate = request.POST['date_year'] + '-' + request.POST['date_month'] + '-' + request.POST['date_day']
@@ -53,26 +49,21 @@ def dashboard(request):
         if request.method == 'POST' and 'del' in request.POST:
             form = DeleteForm(request.POST)
             my_pool = Pool.objects.get(pk=form['pk'].value())
-            my_pool.slots.remove(request.user)
             my_pool.tot = my_pool.tot + 1
             my_pool.save()
             allrides = Pool.objects.filter(dateTime__gte=datetime.date.today(), tot__gt=0)
         if request.method == 'POST' and 'add' in request.POST:
             form = AddForm(request.POST)
             my_pool = Pool.objects.get(pk=form['pk'].value())
-            my_pool.slots.add(request.user)
             my_pool.tot = my_pool.tot - 1
             my_pool.save()
             allrides = Pool.objects.filter(dateTime__gte=datetime.date.today(), tot__gt=0)
-        myrides = Pool.objects.filter(slots=request.user, dateTime__gte=datetime.date.today())
         delform = []
         addform = []
-        for ride in myrides:
-            delform += [DeleteForm(initial={'pk': ride.pk})]
         for ride in allrides:
             addform += [AddForm(initial={'pk': ride.pk})]
         return render(request, 'index.html',
-                      {'allrides': allrides, 'myrides': myrides, 'filter': filter, 'delform': delform,
+                      {'allrides': allrides, 'filter': filter, 'delform': delform,
                        'addform': addform})
     else:
         return redirect('login')

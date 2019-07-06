@@ -45,13 +45,12 @@ class PoolForm(forms.ModelForm):
     time = forms.TimeField(widget=TimeInput(), label='Время отправления')
     source = forms.ChoiceField(choices=CHOICE, label="Откуда", initial='', widget=forms.Select())
     dest = forms.ChoiceField(choices=CHOICE, label="куда", initial='', widget=forms.Select())
-    amount = forms.IntegerField(widget=forms.NumberInput(), required=False, label="стоимость")
     phone_number = forms.CharField(widget=forms.TextInput(), required=False, label="номер телефона")
     note = forms.CharField(widget=forms.TextInput(), required=False, label='Дополнительная информация')
 
     class Meta:
         model = Pool
-        fields = ('user', 'passenger', 'tot', 'dateTime', 'time', 'source', 'dest', 'amount', 'phone_number', 'note')
+        fields = ('user', 'passenger', 'tot', 'dateTime', 'time', 'source', 'dest', 'phone_number', 'note')
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('label_suffix', '')
@@ -68,8 +67,9 @@ CHOICES = (
 class filterForm(forms.Form):
     source = forms.ChoiceField(choices=CHOICES, label="Откуда", initial='', widget=forms.Select())
     dest = forms.ChoiceField(choices=CHOICES, label="Куда", initial='', widget=forms.Select())
-    tot = forms.IntegerField(widget=forms.NumberInput(), label="кол-во")
-    date = forms.DateField(widget=forms.SelectDateWidget(), label="Дата")
+    tot = forms.IntegerField(widget=forms.NumberInput(), label="Мест")
+    date = forms.DateField(widget=forms.SelectDateWidget(years=[2019]),
+                           label="Дата")
 
 
 class DeleteForm(forms.Form):
