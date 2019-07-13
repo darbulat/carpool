@@ -49,25 +49,23 @@
           <div class="col-md-8 col-sm-8 col-xs-12">
             <div class="logo">
                 <a href="{% url 'dashboard' %}">
-                    Автостопом до Кижинги. Привет, {{ user.first_name }}
+                    Автостопом до Кижинги.{% if user.first_name != None %} Привет, {{ user.first_name }}!
+                  {% else %} Авторизируйтесь, чтобы добавить объявление
+                  {% endif %}
                 </a>
             </div>
           </div><!-- end .col-sm-8 -->
 
           <div class="col-md-4 col-sm-4 col-xs-12">
             <div class="user-log">
-
               <a href="{% url 'addPool' %}">
-                                    Добавить машину
-                                </a> /
+                Добавить
+              </a> /
               <a href="{% url 'logout' %}">
-                                    Выйти
-                                </a>
-
+                {% if user.is_authenticated == False %}Войти{% else %}Выйти{% endif %}
+              </a>
             </div>
-
           </div>
-
         </div>
       </section>
 

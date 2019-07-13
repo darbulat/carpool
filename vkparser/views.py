@@ -1,3 +1,4 @@
+import datetime
 import re
 
 from django.shortcuts import render
@@ -63,8 +64,14 @@ def file_writer(data):
     session = vk.Session()
     api = vk.API(session, v=5.101)
     token = 'b5cf544db5cf544db5cf544d72b5a5a66cbb5cfb5cf544de939146f1998f95467f319ba'
+
+    if Pool.objects.all():
+        last_pool = Pool.objects.filter(dateTime__gte=datetime.date.today()).order_by('-time')[0]
+    else:
+        last_pool = None
     for post in data:
-        if post['from_id'] > 0:
+        t = datetime.time(int(time.strftime('%H', time.localtime(post['date']))), int(time.strftime('%M', time.localtime(post['date']))))
+        if post['from_id'] > 0 and (last_pool is None or t > last_pool.time):
             id = post['from_id']
             responce = api.users.get(access_token=token, user_ids=id)
 
@@ -76,6 +83,7 @@ def file_writer(data):
             point = destination(text.lower())
             Pool.objects.create(user=user1, passenger=passenger, source=point[0], dest=point[1], note=text,
                                 dateTime=time.strftime("%Y-%m-%d", time.localtime(post['date'])),
+                                time=time.strftime('%H:%M[:%s[.%u]]', time.localtime(post['date'])),
                                 phone_number=result, first_name=responce[0]['first_name'],
                                 last_name=responce[0]['last_name'], vk_id=id,
                                 )

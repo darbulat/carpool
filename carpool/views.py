@@ -30,43 +30,42 @@ def new(request):
 
 
 def dashboard(request):
-    if request.user.is_authenticated:
-        allrides = Pool.objects.filter(dateTime__gte=datetime.date.today(), tot__gt=0)
-        addform = []
-        if request.method == 'POST' and 'filter' in request.POST:
-            filter = filterForm(request.POST)
-            indate = request.POST['date_year'] + '-' + request.POST['date_month'] + '-' + request.POST['date_day']
-            CHOICES = {'1': "Кижинга", '2': "Улан-Удэ", '3': "Хоринск", }
-            allrides = Pool.objects.filter(source=CHOICES[request.POST['source']],
-                                           dest=CHOICES[request.POST['dest']],
-                                           tot__gte=request.POST['tot'],
-                                           dateTime=indate,
-                                           )
-        else:
-            filter = filterForm()
-        for ride in allrides:
-            addform += [AddForm(initial={'pk': ride.pk})]
-        if request.method == 'POST' and 'del' in request.POST:
-            form = DeleteForm(request.POST)
-            my_pool = Pool.objects.get(pk=form['pk'].value())
-            my_pool.tot = my_pool.tot + 1
-            my_pool.save()
-            allrides = Pool.objects.filter(dateTime__gte=datetime.date.today(), tot__gt=0)
-        if request.method == 'POST' and 'add' in request.POST:
-            form = AddForm(request.POST)
-            my_pool = Pool.objects.get(pk=form['pk'].value())
-            my_pool.tot = my_pool.tot - 1
-            my_pool.save()
-            allrides = Pool.objects.filter(dateTime__gte=datetime.date.today(), tot__gt=0)
-        delform = []
-        addform = []
-        for ride in allrides:
-            addform += [AddForm(initial={'pk': ride.pk})]
-        return render(request, 'index.html',
-                      {'allrides': allrides, 'filter': filter, 'delform': delform,
-                       'addform': addform})
+    from vkparser.views import vk_refresh
+    vk_refresh(request)
+    allrides = Pool.objects.filter().order_by('-dateTime', '-time')
+    addform = []
+    if request.method == 'POST' and 'filter' in request.POST:
+        filter = filterForm(request.POST)
+        indate = request.POST['date_year'] + '-' + request.POST['date_month'] + '-' + request.POST['date_day']
+        CHOICES = {'1': "Кижинга", '2': "Улан-Удэ", '3': "Хоринск", }
+        allrides = Pool.objects.filter(source=CHOICES[request.POST['source']],
+                                       dest=CHOICES[request.POST['dest']],
+                                       tot__gte=request.POST['tot'],
+                                       dateTime=indate,
+                                       )
     else:
-        return redirect('login')
+        filter = filterForm()
+    for ride in allrides:
+        addform += [AddForm(initial={'pk': ride.pk})]
+    if request.method == 'POST' and 'del' in request.POST:
+        form = DeleteForm(request.POST)
+        my_pool = Pool.objects.get(pk=form['pk'].value())
+        my_pool.tot = my_pool.tot + 1
+        my_pool.save()
+        allrides = Pool.objects.filter(dateTime__gte=datetime.date.today(), tot__gt=0)
+    if request.method == 'POST' and 'add' in request.POST:
+        form = AddForm(request.POST)
+        my_pool = Pool.objects.get(pk=form['pk'].value())
+        my_pool.tot = my_pool.tot - 1
+        my_pool.save()
+        allrides = Pool.objects.filter(dateTime__gte=datetime.date.today(), tot__gt=0)
+    delform = []
+    addform = []
+    for ride in allrides:
+        addform += [AddForm(initial={'pk': ride.pk})]
+    return render(request, 'index.html',
+                  {'allrides': allrides, 'filter': filter, 'delform': delform,
+                   'addform': addform})
 
 
 def addPool(request):
